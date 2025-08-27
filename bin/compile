@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+set -e
+
+# parse and derive params
+BUILD_DIR=$1
+
+FULL_CHROME_DIR=$BUILD_DIR/.cache/puppeteer/chrome
+HEADLESS_SHELL_DIR=$BUILD_DIR/.cache/puppeteer/chrome-headless-shell
+
+echo "Starting Chrome cleanup..."
+
+if [ -d "$FULL_CHROME_DIR" ]; then
+  echo "Removing full Chrome directory to reduce slug size..."
+  rm -rf "$FULL_CHROME_DIR"
+else
+  echo "Full Chrome directory not found, skipping removal."
+fi
+
+if [ -d "$HEADLESS_SHELL_DIR" ]; then
+  echo "Keeping chrome-headless-shell directory."
+else
+  echo "Warning: chrome-headless-shell directory not found! Build might fail."
+  exit 1
+fi
+
+echo "Chrome cleanup completed."
